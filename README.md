@@ -1,55 +1,63 @@
-# tenantsage-doc
+# TenantSage Documentation Portal
 
-> **TenantSage Documentation Portal** — Governance-First AI Infrastructure
+[![Deploy to Cloudflare Pages](https://img.shields.io/badge/Deploy-Cloudflare_Pages-F38020?logo=cloudflare&logoColor=white)](https://pages.cloudflare.com)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
 
-This repository contains the source code and content for the official TenantSage documentation portal.
+Official documentation portal for **TenantSage** — Governance-First AI Infrastructure.
 
-## Overview
+## Architecture
 
-TenantSage is a governance-first AI infrastructure platform with architecture designed for multi-tenant isolation, authority hierarchies, and governed retrieval pipelines.
-
-## Documentation Structure
-
-```
-tenantsage-doc/
-├── app/                    # Next.js App Router pages
-├── components/             # Reusable UI components
-├── content/                # MDX documentation content
-│   ├── platform/           # Platform overview, core architecture, execution model
-│   ├── governance/         # Governance engine, policy framework, decisions
-│   ├── technology/         # Service contracts, APIs, data definitions
-│   ├── developers/         # Developer guide, SDKs, implementation patterns
-│   └── resources/          # White papers, downloads, references
-├── public/                 # Static assets
-├── styles/                 # Global styles
-├── scripts/                # Build and utility scripts
-└── .github/
-    └── workflows/          # CI/CD GitHub Actions
-```
-
-## Tech Stack
-
-| Layer | Technology |
+| Property | Value |
 |---|---|
 | Framework | Next.js 15 (App Router) |
 | Rendering | Static Export |
 | Hosting | Cloudflare Pages |
 | Language | TypeScript |
-| Styling | Tailwind CSS |
+| Styling | Tailwind CSS v4 |
 | Content | MDX |
 | Search | Pagefind |
 
-## Getting Started
+## Project Structure
+
+```
+tenantsage-doc/
+├── app/                    # Next.js App Router
+├── components/             # Shared UI components
+├── content/                # MDX documentation
+│   ├── platform/
+│   ├── governance/
+│   ├── technology/
+│   ├── developers/
+│   └── resources/
+├── public/                 # Static assets
+├── .github/workflows/      # CI/CD
+└── package.json
+```
+
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Deployment
+Open [http://localhost:3000](http://localhost:3000)
 
-This portal is automatically deployed to Cloudflare Pages via GitHub Actions on every push to `main`.
+## Build
+
+```bash
+npm run build
+```
+
+This produces a static export in `out/` and runs Pagefind to index the documentation.
+
+## Milestones
+
+- [x] **Milestone 1** — Foundation: layout, navigation, design system, dark mode, MDX support
+- [ ] **Milestone 2** — Content: all documentation pages populated
+- [ ] **Milestone 3** — Advanced: full search, Mermaid diagrams, version selector, Cloudflare deployment
 
 ## License
 
-Copyright © TenantSage. All rights reserved.
+© TenantSage. All rights reserved.
