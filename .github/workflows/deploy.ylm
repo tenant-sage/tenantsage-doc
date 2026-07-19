@@ -1,0 +1,60 @@
+name: Build & Deploy TenantSage Docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'  # Sync from Notion every 6 hours
+
+env:
+  NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+  NOTION_WORKSPACE_ID: ${{ secrets.NOTION_WORKSPACE_ID }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build Static Site
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync content from Notion
+        run: npm run sync:notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_WORKSPACE_ID: ${{ secrets.NOTION_WORKSPACE_ID }}
+
+      - name: Validate documentation
+        run: npm run validate:docs
+
+      - name: Build static site
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://docs.tenantsage.com
+
+      - name: Run link checker
+        run: npm run check:links
+        continue-on-error: true
+
+      - name: Generate search index
+        run: npm run build:search
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: tenantsage-docs
+          directory: out
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
